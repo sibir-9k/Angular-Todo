@@ -1,0 +1,9 @@
+<div class="form-group">
+  <input
+    type="text"
+    class="form-control p-3"
+    [(ngModel)]="inputValue"
+    placeholder="Введите название заметки"
+    (keydown.enter)="onEnter()"
+  />
+</div>

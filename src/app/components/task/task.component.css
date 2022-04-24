@@ -1,0 +1,14 @@
+.note {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.date-item {
+  margin-left: 1.5rem;
+}
+
+.isChecked {
+  text-decoration: line-through;
+  color: #cacaca;
+}
