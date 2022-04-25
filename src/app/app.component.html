@@ -1,15 +1,8 @@
-<app-header></app-header>
+<app-header [done]="counter.done" [undone]="counter.undone"></app-header>
 <div class="container-xl p-3">
   <app-input (createTask)="createTask($event)"></app-input>
   <hr />
   <ul class="list-group">
-    <app-task
-      *ngFor="let task of tasks$ | async"
-      [taskId]="task.id"
-      [isChecked]="task.completed"
-      [title]="task.title"
-      (checkedChange)="checkedHandler($event)"
-      (deleteTask)="deleteTask($event)"
-    ></app-task>
+    <app-task *ngFor="let task of tasks$ | async" [taskId]="task.id" [isChecked]="task.completed" [title]="task.title" (checkedChange)="checkedHandler($event)" (deleteTask)="deleteTask($event)"></app-task>
   </ul>
 </div>

@@ -12,13 +12,21 @@ import { Task } from './components/models/task';
 export class AppComponent implements OnInit {
   private tasksSubj$ = new BehaviorSubject<Task[]>([]);
   public tasks$ = this.tasksSubj$.asObservable();
-
+  public counter = { done: 0, undone: 0 };
   public constructor(private http: HttpClient) {}
 
   public ngOnInit(): void {
     this.http
       .get<Task[]>('https://jsonplaceholder.typicode.com/todos/')
       .subscribe((data) => {
+        const counter = data.reduce(
+          (counter, elem) => {
+            elem.completed ? counter.done++ : counter.undone++;
+            return counter;
+          },
+          { done: 0, undone: 0 }
+        );
+        this.counter = counter;
         this.tasksSubj$.next(data);
       });
   }
