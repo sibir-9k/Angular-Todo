@@ -19,16 +19,26 @@ export class AppComponent implements OnInit {
     this.http
       .get<Task[]>('https://jsonplaceholder.typicode.com/todos/')
       .subscribe((data) => {
-        const counter = data.reduce(
-          (counter, elem) => {
-            elem.completed ? counter.done++ : counter.undone++;
-            return counter;
-          },
-          { done: 0, undone: 0 }
-        );
-        this.counter = counter;
+        // const counter = data.reduce(
+        //   (counter, elem) => {
+        //     elem.completed ? counter.done++ : counter.undone++;
+        //     return counter;
+        //   },
+        //   { done: 0, undone: 0 }
+        // );
+        // this.counter = counter;
         this.tasksSubj$.next(data);
+        this.updateCounter();
       });
+  }
+
+  public updateCounter() {
+    const done = this.tasksSubj$.value.filter((item) => item.completed).length;
+    const undone = this.tasksSubj$.value.filter(
+      (item) => !item.completed
+    ).length;
+    this.counter.done = done;
+    this.counter.undone = undone;
   }
 
   public createTask(title: string) {
@@ -38,6 +48,7 @@ export class AppComponent implements OnInit {
     ];
 
     this.tasksSubj$.next(tasks);
+    this.updateCounter();
   }
 
   public checkedHandler(taskId: string) {
@@ -49,6 +60,7 @@ export class AppComponent implements OnInit {
     });
 
     this.tasksSubj$.next(tasks);
+    this.updateCounter();
   }
 
   public deleteTask(taskId: string) {
@@ -56,5 +68,6 @@ export class AppComponent implements OnInit {
       (task) => task.id != taskId
     );
     this.tasksSubj$.next(filteredTasks);
+    this.updateCounter();
   }
 }
